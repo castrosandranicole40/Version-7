@@ -1,0 +1,205 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="minsu-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Security Reports & Spam Logs</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="loadReports()" fill="clear" color="light">
+        <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="admin-reports-content">
+  <!-- Header Card & KPI Summary -->
+  <div class="kpi-banner">
+    <div class="banner-title">
+      <h3>System Admin Security Queue</h3>
+      <p>User-flagged listings, commercial spam complaints, and fraudulent posts requiring administrative action.</p>
+    </div>
+
+    <!-- Mini KPI stats -->
+    <div class="stats-row">
+      <div class="stat-box pending">
+        <span class="count">{{ pendingCount }}</span>
+        <span class="label">Pending Review</span>
+      </div>
+      <div class="stat-box removed">
+        <span class="count">{{ removedCount }}</span>
+        <span class="label">Posts Removed</span>
+      </div>
+      <div class="stat-box resolved">
+        <span class="count">{{ resolvedCount }}</span>
+        <span class="label">Resolved</span>
+      </div>
+      <div class="stat-box dismissed">
+        <span class="count">{{ dismissedCount }}</span>
+        <span class="label">Dismissed</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter & Search Controls -->
+  <div class="controls-card">
+    <!-- Search Bar -->
+    <div class="search-field">
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery" 
+        placeholder="Search by Item Title, Post ID, or Reporter..."
+      />
+    </div>
+
+    <!-- Status Tabs / Filter Segment -->
+    <div class="status-tabs">
+      <button 
+        type="button" 
+        class="tab-btn" 
+        [class.active]="selectedFilter === 'all'"
+        (click)="selectedFilter = 'all'"
+      >
+        All ({{ reports.length }})
+      </button>
+      <button 
+        type="button" 
+        class="tab-btn pending" 
+        [class.active]="selectedFilter === 'Pending Review'"
+        (click)="selectedFilter = 'Pending Review'"
+      >
+        Pending ({{ pendingCount }})
+      </button>
+      <button 
+        type="button" 
+        class="tab-btn" 
+        [class.active]="selectedFilter === 'Resolved'"
+        (click)="selectedFilter = 'Resolved'"
+      >
+        Resolved ({{ resolvedCount }})
+      </button>
+      <button 
+        type="button" 
+        class="tab-btn" 
+        [class.active]="selectedFilter === 'Post Removed'"
+        (click)="selectedFilter = 'Post Removed'"
+      >
+        Removed ({{ removedCount }})
+      </button>
+      <button 
+        type="button" 
+        class="tab-btn" 
+        [class.active]="selectedFilter === 'Dismissed'"
+        (click)="selectedFilter = 'Dismissed'"
+      >
+        Dismissed ({{ dismissedCount }})
+      </button>
+    </div>
+
+    <!-- Category / Reason Filter -->
+    <div class="reason-selector">
+      <label>Filter by Reason:</label>
+      <select [(ngModel)]="selectedReason">
+        <option value="all">All Report Reasons</option>
+        <option value="spam">Spam / Advertisements</option>
+        <option value="fake_claim">False Claim / Suspicious</option>
+        <option value="inappropriate">Inappropriate Content</option>
+        <option value="duplicate">Duplicate / Outdated</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Report Items List -->
+  <div class="reports-container">
+    <div *ngIf="filteredReports.length === 0" class="empty-state">
+      <div class="empty-icon">🛡️</div>
+      <h4>No Security Reports Found</h4>
+      <p>There are no flagged items matching your current filters.</p>
+    </div>
+
+    <div *ngFor="let rep of filteredReports" class="report-card" [class.pending-border]="rep.status === 'Pending Review'">
+      <!-- Card Top: Reason & Status Badges -->
+      <div class="card-header">
+        <div class="reason-pill" [class]="rep.reason">
+          <span *ngIf="rep.reason === 'spam'">📢 Spam or Advertisement</span>
+          <span *ngIf="rep.reason === 'fake_claim'">⚠️ Suspicious Post / Fake Item</span>
+          <span *ngIf="rep.reason === 'inappropriate'">🚫 Inappropriate Content</span>
+          <span *ngIf="rep.reason === 'duplicate'">📑 Duplicate Listing</span>
+          <span *ngIf="rep.reason === 'other'">❓ Security Policy Violation</span>
+        </div>
+        
+        <span class="status-badge" [class]="rep.status.toLowerCase().replace(' ', '-')">
+          {{ rep.status }}
+        </span>
+      </div>
+
+      <!-- Card Body: Item Info & Reporter Info -->
+      <div class="card-body">
+        <!-- Reported Item Title & Post ID -->
+        <div class="item-summary">
+          <div class="item-id-badge">Post ID: {{ rep.itemId }}</div>
+          <h4 class="item-title">{{ rep.itemTitle }}</h4>
+          <div class="reported-time">Reported: {{ rep.reportedAt }}</div>
+        </div>
+
+        <!-- Reporter Details -->
+        <div class="reporter-box">
+          <div class="reporter-label">Reported by:</div>
+          <div class="reporter-name">
+            <strong>{{ rep.reportedBy }}</strong> 
+            <span class="role-tag" *ngIf="rep.reporterRole">({{ rep.reporterRole }})</span>
+          </div>
+          <div class="reporter-contact">
+            <span *ngIf="rep.reporterEmail">{{ rep.reporterEmail }}</span>
+            <span *ngIf="rep.reporterPhone"> · {{ rep.reporterPhone }}</span>
+          </div>
+        </div>
+
+        <!-- User Explanation Notes (e.g. spam kineme or ad) -->
+        <div class="notes-box" *ngIf="rep.reasonDetails">
+          <div class="notes-label">User's Stated Reason / Complaint:</div>
+          <p class="notes-text">"{{ rep.reasonDetails }}"</p>
+        </div>
+
+        <!-- Admin Resolution Note if resolved -->
+        <div class="admin-notes-box" *ngIf="rep.adminNotes">
+          <div class="admin-notes-label">Admin Action Note:</div>
+          <p class="admin-notes-text">{{ rep.adminNotes }}</p>
+        </div>
+      </div>
+
+      <!-- Card Actions: Dismiss, Remove Post, Resolve -->
+      <div class="card-actions">
+        <!-- Dismiss Report -->
+        <button 
+          type="button" 
+          class="btn-action btn-dismiss" 
+          (click)="dismissReport(rep)"
+          [disabled]="rep.status === 'Dismissed'"
+        >
+          Dismiss Report
+        </button>
+
+        <!-- Remove Post / Item -->
+        <button 
+          type="button" 
+          class="btn-action btn-remove" 
+          (click)="removePostItem(rep)"
+          [disabled]="rep.status === 'Post Removed'"
+        >
+          Remove Post / Item
+        </button>
+
+        <!-- Mark as Resolved -->
+        <button 
+          type="button" 
+          class="btn-action btn-resolve" 
+          (click)="markAsResolved(rep)"
+          [disabled]="rep.status === 'Resolved'"
+        >
+          Mark as Resolved
+        </button>
+      </div>
+    </div>
+  </div>
+</ion-content>

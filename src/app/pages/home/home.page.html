@@ -1,0 +1,275 @@
+<!-- MinSU FoundIt! - Home Page Template (Mindoro State University · Victoria Campus) -->
+<ion-header class="ion-no-border">
+  <!-- 1. TOP TOOLBAR: MinSU Deep Green (#005A36) with crisp white text, hamburger left, user profile right -->
+  <ion-toolbar color="primary" class="minsu-toolbar">
+    <ion-buttons slot="start">
+      <ion-menu-button auto-hide="false" class="menu-btn">
+        <ion-icon name="menu-outline"></ion-icon>
+      </ion-menu-button>
+    </ion-buttons>
+
+    <ion-title>
+      <div class="toolbar-brand">
+        <span class="app-title">MinSU FoundIt!</span>
+        <span class="campus-title">Victoria Campus</span>
+      </div>
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <!-- User profile shortcut (Redundant plus icon removed) -->
+      <ion-button routerLink="/profile" class="profile-btn" aria-label="Profile">
+        <ion-icon slot="icon-only" name="person-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="home-page-content">
+  <!-- 1. GREETING BANNER & PILL-SHAPED CTA (Single, clean report action) -->
+  <div class="greeting-banner-card">
+    <div class="greeting-text-group">
+      <h1 class="greeting-heading">Hello, MinSUan! 👋</h1>
+      <p class="greeting-location">
+        <ion-icon name="location" class="location-icon"></ion-icon>
+        Browsing in MinSU - Victoria Campus
+      </p>
+    </div>
+
+    <!-- Search Input Group with light mint icon container -->
+    <div class="minsu-input-group search-box">
+      <div class="minsu-icon-container">
+        <ion-icon name="search-outline"></ion-icon>
+      </div>
+      <input 
+        type="text" 
+        placeholder="Search calculator, wallet, tumbler, keys, ID..." 
+        [(ngModel)]="searchQuery" 
+        (input)="applyFilters()" 
+      />
+    </div>
+
+    <!-- High-visibility Pill-Shaped CTA Button without double plus symbols -->
+    <button type="button" routerLink="/upload" class="pill-cta-post">
+      <ion-icon name="megaphone"></ion-icon>
+      <span>Report Lost / Found Item</span>
+    </button>
+  </div>
+
+  <!-- QUICK TYPE FILTER SEGMENT: All / Lost / Found -->
+  <div class="filter-segment-container">
+    <button 
+      type="button" 
+      class="segment-pill" 
+      [class.active]="selectedType === 'all'" 
+      (click)="setTypeFilter('all')">
+      All ({{ items.length }})
+    </button>
+    <button 
+      type="button" 
+      class="segment-pill lost" 
+      [class.active]="selectedType === 'lost'" 
+      (click)="setTypeFilter('lost')">
+      <ion-icon name="alert-circle"></ion-icon>
+      Lost Items
+    </button>
+    <button 
+      type="button" 
+      class="segment-pill found" 
+      [class.active]="selectedType === 'found'" 
+      (click)="setTypeFilter('found')">
+      <ion-icon name="checkmark-circle"></ion-icon>
+      Found Items
+    </button>
+  </div>
+
+  <!-- 2. RECENT CAMPUS POSTS (GRID/FEED) -->
+  <section class="section-container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Recent Campus Posts</h2>
+        <p class="section-subtitle">Real-time reports across Victoria campus grounds</p>
+      </div>
+      <span class="count-tag">{{ filteredItems.length }} active</span>
+    </div>
+
+    <!-- Modern Card Layouts (Pure White, 16px radius, smooth shadow) -->
+    <div class="posts-feed-grid">
+      <div 
+        *ngFor="let item of filteredItems" 
+        class="recent-item-card" 
+        [routerLink]="['/item', item.id]">
+        
+        <!-- Media container with status badge -->
+        <div class="card-media-wrapper">
+          <img [src]="item.images[0]" [alt]="item.title" class="item-thumbnail" />
+          
+          <!-- Pill Tags: LOST in Gold/Yellow with dark text; FOUND in Emerald with white text -->
+          <span [class]="item.type === 'lost' ? 'badge-pill-lost' : 'badge-pill-found'">
+            {{ item.type === 'lost' ? 'LOST' : 'FOUND' }}
+          </span>
+
+          <span class="category-chip">{{ item.category }}</span>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-content-body">
+          <h3 class="item-name">{{ item.title }}</h3>
+          
+          <!-- Specific campus spot -->
+          <div class="campus-spot-info">
+            <ion-icon name="pin" class="pin-icon"></ion-icon>
+            <span class="spot-text">{{ item.location.specificLocation || item.location.campusZone }}</span>
+          </div>
+
+          <!-- Reporter Info & Date -->
+          <div class="card-reporter-footer">
+            <div class="reporter-avatar">
+              {{ item.postedBy.substring(0, 1) }}
+            </div>
+            <div class="reporter-details">
+              <span class="reporter-name">{{ item.postedBy }}</span>
+              <span class="post-time">{{ item.date }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. INTERACTIVE LEAFLET CAMPUS MAP WIDGET -->
+  <section class="section-container">
+    <div class="section-header">
+      <div class="title-with-badge">
+        <h2 class="section-title">MinSU Victoria Campus Activity Map</h2>
+        <span class="active-reports-badge">{{ filteredItems.length }} Reports</span>
+      </div>
+      <p class="section-subtitle">Real-time Leaflet & OpenStreetMap Navigation Centered on Victoria Campus</p>
+    </div>
+
+    <div class="campus-map-card-widget">
+      <!-- Leaflet Map Control Toolbar -->
+      <div class="map-controls-toolbar">
+        <!-- Campus Building Preset Dropdown -->
+        <div class="preset-dropdown-wrap">
+          <ion-icon name="location-outline" class="preset-icon"></ion-icon>
+          <select [(ngModel)]="selectedPresetId" (change)="onPresetSelected(selectedPresetId)" class="landmark-select">
+            <option value="all">📍 Jump to Campus Landmark...</option>
+            <option *ngFor="let p of campusPresets" [value]="p.id">{{ p.name }}</option>
+          </select>
+        </div>
+
+        <div class="map-button-group">
+          <!-- Recenter Campus Center -->
+          <button type="button" class="ctrl-btn" (click)="recenterCampus()">
+            <ion-icon name="locate-outline"></ion-icon>
+            <span>Center MinSU</span>
+          </button>
+
+          <!-- Device Geolocation Near Me -->
+          <button 
+            type="button" 
+            class="ctrl-btn near-me" 
+            [class.active]="isNearMeFilterActive" 
+            (click)="toggleNearMeFilter()">
+            <ion-icon name="navigate-circle-outline"></ion-icon>
+            <span>{{ isLocating ? 'Locating...' : 'Near Me' }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Geolocation Message Banner -->
+      <div *ngIf="geoStatusMessage" class="geo-status-banner">
+        <ion-icon name="information-circle"></ion-icon>
+        <span>{{ geoStatusMessage }}</span>
+      </div>
+
+      <!-- Leaflet Native Map Container -->
+      <div class="leaflet-map-wrapper">
+        <div #mapContainer class="leaflet-map-host"></div>
+        
+        <div class="map-coordinates-pill">
+          <span>MinSU Main Campus (Victoria) · 13.1553° N, 121.1867° E</span>
+        </div>
+      </div>
+
+      <!-- Legend & Info Bar -->
+      <div class="map-legend-bar">
+        <div class="legend-items">
+          <span class="legend-badge lost">
+            <span class="dot gold"></span>
+            <span>Lost Item (#FFC72C)</span>
+          </span>
+          <span class="legend-badge found">
+            <span class="dot green"></span>
+            <span>Found Item (#0B7B48)</span>
+          </span>
+        </div>
+        <span class="legend-source">OpenStreetMap & Leaflet.js</span>
+      </div>
+
+      <!-- Bottom Light-Green Action Strip with Megaphone -->
+      <div class="map-action-strip" routerLink="/upload">
+        <div class="strip-left">
+          <div class="megaphone-icon-box">
+            <ion-icon name="megaphone"></ion-icon>
+          </div>
+          <span class="strip-text">Found an item? Pin it on campus to help a fellow MinSUan</span>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="strip-chevron"></ion-icon>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. "NEAR MY ZONE" LIST SECTION -->
+  <section class="section-container near-zone-section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Near My Zone</h2>
+        <p class="section-subtitle">Items reported nearby your current college building or facility</p>
+      </div>
+    </div>
+
+    <!-- Structured Zone Feed Cards -->
+    <div class="zone-groups-wrapper">
+      <div *ngFor="let group of zoneCategories" class="zone-category-block">
+        <div class="zone-header-strip">
+          <div class="zone-label-wrap">
+            <ion-icon name="location-sharp" class="zone-pin-icon"></ion-icon>
+            <h4 class="zone-name">{{ group.zone }}</h4>
+          </div>
+          <span class="zone-items-count">{{ group.items.length }} reported</span>
+        </div>
+
+        <div class="zone-cards-list">
+          <div 
+            *ngFor="let item of group.items" 
+            class="zone-structured-card" 
+            [routerLink]="['/item', item.id]">
+            
+            <img [src]="item.images[0]" [alt]="item.title" class="zone-card-thumb" />
+
+            <div class="zone-card-info">
+              <div class="zone-card-top">
+                <!-- Status tag -->
+                <span [class]="item.type === 'lost' ? 'badge-pill-lost sm' : 'badge-pill-found sm'">
+                  {{ item.type === 'lost' ? 'LOST' : 'FOUND' }}
+                </span>
+                <span class="zone-card-date">{{ item.date }}</span>
+              </div>
+
+              <h4 class="zone-card-title">{{ item.title }}</h4>
+              
+              <div class="zone-card-bottom">
+                <span class="zone-spot-detail">
+                  <ion-icon name="navigate-outline"></ion-icon>
+                  {{ item.location.specificLocation || item.location.campusZone }}
+                </span>
+                <span class="reporter-badge">By {{ item.postedBy }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</ion-content>

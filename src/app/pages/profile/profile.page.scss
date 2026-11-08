@@ -1,0 +1,170 @@
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.avatar-header-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 16px 0;
+
+  .avatar-ring {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: 3px solid var(--minsu-emerald);
+    padding: 3px;
+    background: #FFFFFF;
+    margin-bottom: 12px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .avatar-edit-badge {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: var(--minsu-deep-green);
+      color: #FFFFFF;
+      border: 2px solid #FFFFFF;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+    color: #0F172A;
+  }
+
+  .role-pill {
+    margin-top: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 3px 12px;
+    background-color: #E8F5E9;
+    color: var(--minsu-deep-green);
+    border-radius: 20px;
+  }
+
+  .campus-tag {
+    font-size: 12px;
+    color: #64748B;
+    margin: 4px 0 0;
+  }
+}
+
+.settings-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+
+  h4 {
+    margin: 0 0 4px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #0F172A;
+  }
+}
+
+.field-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  .error-msg {
+    color: #E11D48;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .toggle-pass {
+    background: transparent;
+    border: none;
+    color: #64748B;
+    padding: 0 12px;
+    cursor: pointer;
+  }
+}
+
+.btn-save-profile, .btn-change-pass {
+  background-color: var(--minsu-deep-green);
+  color: #FFFFFF;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.danger-zone-card {
+  background-color: #FFF1F2;
+  border: 1px solid #FECDD3;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  h4 {
+    margin: 0;
+    color: #BE123C;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
+    font-size: 13px;
+    color: #9F1239;
+    line-height: 1.5;
+  }
+
+  .btn-delete-account {
+    background-color: #E11D48;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+}

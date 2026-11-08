@@ -1,0 +1,51 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isMinSUEmail(email) {
+      return email.matches('.*@minsu\\.edu\\.ph$');
+    }
+
+    // Items collection (Lost & Found reports)
+    match /items/{itemId} {
+      // Anyone can read active lost & found items on campus
+      allow read: if true;
+      
+      // Creating items requires valid data
+      allow create: if request.resource.data.title is string &&
+                       request.resource.data.title.size() <= 120 &&
+                       request.resource.data.description is string &&
+                       request.resource.data.description.size() <= 2000 &&
+                       request.resource.data.type in ['lost', 'found'];
+
+      // Updating items (e.g. marking claimed)
+      allow update: if request.resource.data.status in ['active', 'claimed', 'resolved'];
+      
+      // Deletion
+      allow delete: if isSignedIn();
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if isSignedIn() || request.auth.uid == userId;
+    }
+
+    // Campus landmarks collection (Admin curated presets)
+    match /landmarks/{landmarkId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // System test connection
+    match /system/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

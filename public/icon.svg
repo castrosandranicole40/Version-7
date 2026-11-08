@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="minsuGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#005A36" />
+      <stop offset="100%" stop-color="#0B7B48" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#002415" flood-opacity="0.35" />
+    </filter>
+  </defs>
+  
+  <!-- Outer Rounded Shield/Squircle -->
+  <rect width="512" height="512" rx="112" fill="url(#minsuGrad)" />
+  
+  <!-- Outer Gold Accent Ring -->
+  <circle cx="256" cy="256" r="188" fill="none" stroke="#FFC72C" stroke-width="12" opacity="0.9" />
+  
+  <!-- Inner White/Mint Subtle Ring -->
+  <circle cx="256" cy="256" r="168" fill="none" stroke="#E8F5E9" stroke-width="3" opacity="0.3" />
+  
+  <!-- Magnifying Glass Search Symbol in Gold -->
+  <g filter="url(#shadow)" transform="translate(4, -12)">
+    <!-- Lens Frame -->
+    <circle cx="236" cy="236" r="76" fill="#005A36" stroke="#FFC72C" stroke-width="18" />
+    <!-- Pin Location Point Inside Lens -->
+    <circle cx="236" cy="226" r="28" fill="#FFC72C" />
+    <path d="M 236 254 L 222 226 A 14 14 0 0 1 250 226 Z" fill="#FFC72C" />
+    <circle cx="236" cy="224" r="10" fill="#005A36" />
+    <!-- Handle -->
+    <line x1="294" y1="294" x2="368" y2="368" stroke="#FFC72C" stroke-width="22" stroke-linecap="round" />
+  </g>
+  
+  <!-- Banner Text / Campus Identifier -->
+  <rect x="136" y="408" width="240" height="42" rx="21" fill="#FFC72C" />
+  <text x="256" y="435" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="900" fill="#005A36" text-anchor="middle" letter-spacing="2">VICTORIA</text>
+</svg>

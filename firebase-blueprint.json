@@ -1,0 +1,153 @@
+{
+  "entities": {
+    "Item": {
+      "title": "Item",
+      "description": "A lost or found item reported by MinSU campus community members",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the item"
+        },
+        "title": {
+          "type": "string",
+          "description": "Short title describing the item",
+          "maxLength": 120
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the lost or found item",
+          "maxLength": 2000
+        },
+        "type": {
+          "type": "string",
+          "enum": ["lost", "found"]
+        },
+        "category": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "location": {
+          "type": "object"
+        },
+        "contact": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "reward": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "claimed", "resolved"]
+        },
+        "images": {
+          "type": "array"
+        },
+        "postedBy": {
+          "type": "string"
+        },
+        "posterId": {
+          "type": "string"
+        },
+        "posterEmail": {
+          "type": "string"
+        },
+        "posterRole": {
+          "type": "string"
+        },
+        "postedDate": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "title", "description", "type", "category", "contact", "status", "posterId"]
+    },
+    "User": {
+      "title": "User",
+      "description": "MinSU student, faculty, or staff member account",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "lastName": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "email": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9._%+-]+@minsu\\.edu\\.ph$"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["student", "faculty", "staff", "admin"]
+        },
+        "department": {
+          "type": "string"
+        },
+        "studentId": {
+          "type": "string"
+        },
+        "avatarUrl": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "firstName", "lastName", "email", "role"]
+    },
+    "Landmark": {
+      "title": "Landmark",
+      "description": "Admin curated MinSU Victoria Campus landmark preset or custom facility pin",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "zone": { "type": "string" },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "description": { "type": "string" },
+        "isCustom": { "type": "boolean" },
+        "createdBy": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "zone", "lat", "lng"]
+    }
+  },
+  "firestore": {
+    "/items/{itemId}": {
+      "schema": {
+        "$ref": "#/entities/Item"
+      },
+      "description": "Collection of lost and found campus reports"
+    },
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "Institutional user profiles"
+    },
+    "/landmarks/{landmarkId}": {
+      "schema": {
+        "$ref": "#/entities/Landmark"
+      },
+      "description": "Admin curated campus landmarks and facility pins"
+    }
+  }
+}

@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Item Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="shareItem()">
+        <ion-icon slot="icon-only" name="share-social-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="detail-content" *ngIf="item">
+  <!-- Image Carousel / Hero Display -->
+  <div class="hero-image-box">
+    <img [src]="item.images[activeImageIndex] || item.images[0]" [alt]="item.title" />
+    <span [class]="item.type === 'lost' ? 'badge-lost' : 'badge-found' + ' detail-badge'">
+      {{ item.type === 'lost' ? 'LOST ITEM' : 'FOUND ITEM' }}
+    </span>
+  </div>
+
+  <div class="detail-body">
+    <!-- Header info -->
+    <div class="title-row">
+      <h2>{{ item.title }}</h2>
+      <span class="category-tag">{{ item.category }}</span>
+    </div>
+
+    <div *ngIf="item.reward" class="reward-banner">
+      <ion-icon name="gift"></ion-icon>
+      <span>Offered Reward: <strong>{{ item.reward }}</strong></span>
+    </div>
+
+    <!-- Location Card with MinSU Victoria Leaflet Campus Map -->
+    <div class="campus-location-card">
+      <div class="loc-header">
+        <ion-icon name="location" color="primary"></ion-icon>
+        <div>
+          <h4>{{ item.location.campusZone }}</h4>
+          <p>{{ item.location.specificLocation || 'Mindoro State University - Victoria Campus' }}</p>
+        </div>
+      </div>
+
+      <!-- Embedded Leaflet Map for Exact Pinpoint -->
+      <div class="leaflet-detail-map-wrapper">
+        <div #itemMapContainer class="leaflet-detail-map-host"></div>
+        <div class="coordinates-pill">
+          GPS: {{ item.location.lat.toFixed(4) }}° N, {{ item.location.lng.toFixed(4) }}° E
+        </div>
+      </div>
+
+      <div *ngIf="distanceFromUserStr" class="proximity-pill">
+        <ion-icon name="navigate-outline"></ion-icon>
+        <span>{{ distanceFromUserStr }}</span>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="description-section">
+      <h3>Description</h3>
+      <p>{{ item.description }}</p>
+    </div>
+
+    <!-- Poster Info -->
+    <div class="poster-card">
+      <div class="avatar-circle">
+        {{ item.postedBy.substring(0, 1) }}
+      </div>
+      <div class="poster-meta">
+        <span class="poster-name">Reported by {{ item.postedBy }}</span>
+        <span class="report-date">{{ item.date }} · MinSU Victoria</span>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons-group">
+      <a [href]="'tel:' + item.contact" class="btn-call">
+        <ion-icon name="call"></ion-icon>
+        Call Contact
+      </a>
+      <button type="button" class="btn-message" (click)="openMessageModal()">
+        <ion-icon name="chatbubble-ellipses"></ion-icon>
+        In-App Message
+      </button>
+    </div>
+
+    <!-- Report ad affordance -->
+    <div class="report-row">
+      <button type="button" (click)="reportPost()">
+        <ion-icon name="flag-outline"></ion-icon>
+        Report Inappropriate Post
+      </button>
+    </div>
+  </div>
+</ion-content>

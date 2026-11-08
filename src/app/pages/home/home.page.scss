@@ -1,0 +1,836 @@
+/**
+ * MinSU FoundIt! - Home Page SCSS Stylesheet
+ * Mindoro State University - Victoria Campus
+ */
+
+// Official MinSU Color Variables
+$minsu-deep-green: #005A36;
+$minsu-emerald: #0B7B48;
+$minsu-gold: #FFC72C;
+$minsu-dark: #1E1E1E;
+$minsu-mint-subtle: #E8F5E9;
+$minsu-bg: #F8FAF9;
+$card-radius: 16px;
+
+.home-page-content {
+  --background: #F8FAF9;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+/* 1. TOP TOOLBAR */
+.minsu-toolbar {
+  --background: #{$minsu-deep-green};
+  --color: #FFFFFF;
+  border-bottom: 1px solid #00472a;
+  box-shadow: 0 2px 8px rgba(0, 90, 54, 0.15);
+
+  .menu-btn {
+    --color: #FFFFFF;
+    font-size: 22px;
+  }
+
+  .toolbar-brand {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .app-title {
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      line-height: 1.1;
+    }
+    .campus-title {
+      font-size: 11px;
+      color: #{$minsu-gold};
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+  }
+
+  .profile-btn {
+    --background: rgba(255, 255, 255, 0.15);
+    --color: #FFFFFF;
+    --border-radius: 10px;
+    margin-right: 6px;
+    height: 36px;
+    width: 36px;
+    font-size: 20px;
+  }
+}
+
+/* 1. GREETING BANNER & PILL CTA */
+.greeting-banner-card {
+  background: linear-gradient(135deg, #{$minsu-deep-green} 0%, #{$minsu-emerald} 100%);
+  padding: 24px 20px;
+  border-radius: 0 0 24px 24px;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 4px 16px rgba(0, 90, 54, 0.12);
+
+  .greeting-text-group {
+    .greeting-heading {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+    }
+    .greeting-location {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: #C8E6C9;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 500;
+
+      .location-icon {
+        color: #{$minsu-gold};
+        font-size: 15px;
+      }
+    }
+  }
+
+  .search-box {
+    background: #FFFFFF;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+    .minsu-icon-container {
+      width: 40px;
+      height: 40px;
+      margin: 4px;
+      border-radius: 8px;
+      background: #{$minsu-mint-subtle};
+      color: #{$minsu-deep-green};
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      color: #1E293B;
+      background: transparent;
+      &::placeholder {
+        color: #94A3B8;
+      }
+    }
+  }
+
+  /* High-visibility pill CTA button */
+  .pill-cta-post {
+    background-color: #{$minsu-gold};
+    color: #{$minsu-dark};
+    border: none;
+    border-radius: 9999px;
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(255, 199, 44, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    ion-icon {
+      font-size: 18px;
+    }
+  }
+}
+
+/* FILTER SEGMENT PILLS */
+.filter-segment-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 16px 4px;
+  overflow-x: auto;
+
+  .segment-pill {
+    padding: 8px 16px;
+    border-radius: 9999px;
+    border: 1px solid #E2E8F0;
+    background: #FFFFFF;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.active {
+      background: #{$minsu-deep-green};
+      color: #FFFFFF;
+      border-color: #{$minsu-deep-green};
+      box-shadow: 0 2px 6px rgba(0, 90, 54, 0.2);
+    }
+
+    &.lost.active {
+      background: #{$minsu-gold};
+      color: #{$minsu-dark};
+      border-color: #{$minsu-gold};
+    }
+
+    &.found.active {
+      background: #{$minsu-emerald};
+      color: #FFFFFF;
+      border-color: #{$minsu-emerald};
+    }
+  }
+}
+
+/* SECTION STRUCTURE */
+.section-container {
+  padding: 16px 16px 20px;
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 14px;
+
+    .section-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+      color: #0F172A;
+      letter-spacing: -0.01em;
+    }
+
+    .section-subtitle {
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: #64748B;
+    }
+
+    .count-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: #{$minsu-deep-green};
+      background: #{$minsu-mint-subtle};
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .title-with-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+
+      .active-reports-badge {
+        background: #{$minsu-gold};
+        color: #{$minsu-dark};
+        font-weight: 800;
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 9999px;
+        box-shadow: 0 2px 6px rgba(255, 199, 44, 0.2);
+      }
+    }
+  }
+}
+
+/* 2. RECENT CAMPUS POSTS GRID */
+.posts-feed-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.recent-item-card {
+  background: #FFFFFF;
+  border-radius: #{$card-radius};
+  border: 1px solid rgba(0, 90, 54, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 90, 54, 0.1);
+  }
+
+  .card-media-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: #E2E8F0;
+
+    .item-thumbnail {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Status Badges: LOST in Gold/Yellow with dark text; FOUND in Emerald with white text */
+    .badge-pill-lost {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #{$minsu-gold};
+      color: #{$minsu-dark};
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .badge-pill-found {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #{$minsu-emerald};
+      color: #FFFFFF;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .category-chip {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #FFFFFF;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 6px;
+      backdrop-filter: blur(4px);
+    }
+  }
+
+  .card-content-body {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+
+    .item-name {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 700;
+      color: #0F172A;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .campus-spot-info {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin: 6px 0 10px;
+      font-size: 12px;
+      color: #{$minsu-deep-green};
+      font-weight: 600;
+
+      .pin-icon {
+        color: #{$minsu-emerald};
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+      .spot-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .card-reporter-footer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #F1F5F9;
+
+      .reporter-avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: #{$minsu-deep-green};
+        color: #FFFFFF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+
+      .reporter-details {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+
+        .reporter-name {
+          font-size: 12px;
+          font-weight: 600;
+          color: #334155;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .post-time {
+          font-size: 10px;
+          color: #94A3B8;
+        }
+      }
+    }
+  }
+}
+
+/* 3. INTERACTIVE CAMPUS MAP WIDGET */
+.campus-map-card-widget {
+  background: #FFFFFF;
+  border-radius: #{$card-radius};
+  border: 1px solid rgba(0, 90, 54, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+
+  .map-controls-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 16px;
+    background: #F8FAF9;
+    border-bottom: 1px solid #E2E8F0;
+
+    .preset-dropdown-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 6px 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+      .preset-icon {
+        color: #{$minsu-deep-green};
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+
+      .landmark-select {
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 12px;
+        font-weight: 700;
+        color: #1E293B;
+        cursor: pointer;
+      }
+    }
+
+    .map-button-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .ctrl-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border-radius: 10px;
+        border: 1px solid #E2E8F0;
+        background: #FFFFFF;
+        color: #334155;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        ion-icon {
+          font-size: 14px;
+          color: #{$minsu-deep-green};
+        }
+
+        &:hover {
+          background: #F1F5F9;
+        }
+
+        &.near-me.active {
+          background: #EFF6FF;
+          border-color: #3B82F6;
+          color: #1D4ED8;
+          ion-icon {
+            color: #2563EB;
+          }
+        }
+      }
+    }
+  }
+
+  .geo-status-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #FFFBEB;
+    border-bottom: 1px solid #FDE68A;
+    font-size: 11px;
+    color: #92400E;
+
+    ion-icon {
+      font-size: 16px;
+      color: #D97706;
+    }
+  }
+
+  .leaflet-map-wrapper {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    background: #E8F0EC;
+
+    @media (min-width: 768px) {
+      height: 380px;
+    }
+
+    .leaflet-map-host {
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .map-coordinates-pill {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 90, 54, 0.9);
+      color: #{$minsu-gold};
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-family: monospace;
+      font-weight: 700;
+      backdrop-filter: blur(4px);
+      z-index: 500;
+      pointer-events: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .map-legend-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #FFFFFF;
+    border-top: 1px solid #F1F5F9;
+    font-size: 11px;
+
+    .legend-items {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .legend-badge {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 700;
+
+        .dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+
+          &.gold {
+            background-color: #{$minsu-gold};
+            border: 1px solid #B48400;
+          }
+
+          &.green {
+            background-color: #{$minsu-emerald};
+            border: 1px solid #005A36;
+          }
+        }
+
+        &.lost {
+          color: #8D5B00;
+        }
+
+        &.found {
+          color: #{$minsu-deep-green};
+        }
+      }
+    }
+
+    .legend-source {
+      font-size: 10px;
+      color: #94A3B8;
+      font-family: monospace;
+    }
+  }
+
+  /* Bottom Light-Green Action Strip */
+  .map-action-strip {
+    background-color: #{$minsu-mint-subtle};
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    border-top: 1px solid rgba(11, 123, 72, 0.12);
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #d8eed9;
+    }
+
+    .strip-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+
+      .megaphone-icon-box {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: #{$minsu-deep-green};
+        color: #{$minsu-gold};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+
+      .strip-text {
+        font-size: 13px;
+        font-weight: 700;
+        color: #{$minsu-deep-green};
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .strip-chevron {
+      color: #{$minsu-emerald};
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+  }
+}
+
+/* 4. "NEAR MY ZONE" SECTION */
+.near-zone-section {
+  .zone-groups-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    .zone-category-block {
+      background: #FFFFFF;
+      border-radius: #{$card-radius};
+      border: 1px solid rgba(0, 90, 54, 0.08);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+      padding: 16px;
+
+      .zone-header-strip {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #F1F5F9;
+
+        .zone-label-wrap {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+
+          .zone-pin-icon {
+            color: #{$minsu-emerald};
+            font-size: 16px;
+          }
+          .zone-name {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 800;
+            color: #0F172A;
+          }
+        }
+
+        .zone-items-count {
+          font-size: 11px;
+          font-weight: 700;
+          color: #64748B;
+        }
+      }
+
+      .zone-cards-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+
+        @media (min-width: 640px) {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .zone-structured-card {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 10px;
+          height: 84px;
+          background: #F8FAF9;
+          border-radius: 12px;
+          border: 1px solid #E2E8F0;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            border-color: #{$minsu-emerald};
+            background: #FFFFFF;
+            box-shadow: 0 2px 8px rgba(0, 90, 54, 0.08);
+          }
+
+          .zone-card-thumb {
+            width: 64px;
+            height: 64px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
+          }
+
+          .zone-card-info {
+            flex: 1;
+            min-width: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2px 0;
+
+            .zone-card-top {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 6px;
+
+              .zone-card-date {
+                font-size: 10px;
+                color: #94A3B8;
+                white-space: nowrap;
+              }
+            }
+
+            .zone-card-title {
+              margin: 0;
+              font-size: 13px;
+              font-weight: 700;
+              color: #1E293B;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+
+            .zone-card-bottom {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 4px;
+
+              .zone-spot-detail {
+                font-size: 11px;
+                color: #{$minsu-deep-green};
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 3px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                ion-icon {
+                  font-size: 12px;
+                  flex-shrink: 0;
+                }
+              }
+
+              .reporter-badge {
+                font-size: 10px;
+                color: #64748B;
+                white-space: nowrap;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Helper Badge styles for structured cards */
+.badge-pill-lost.sm {
+  background-color: #{$minsu-gold};
+  color: #{$minsu-dark};
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.badge-pill-found.sm {
+  background-color: #{$minsu-emerald};
+  color: #FFFFFF;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+}

@@ -1,0 +1,8 @@
+{
+  "name": "MinSU FoundIt!",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone",
+  "id": "minsu-foundit"
+}

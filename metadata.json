@@ -1,0 +1,6 @@
+{
+  "name": "MinSU FoundIt!",
+  "description": "Foundational mobile and web application architecture for Mindoro State University - Victoria Campus Lost & Found Capstone project, featuring MinSU design system, PWA support, interactive campus map, and Ionic/Capacitor code export.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,122 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Account Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="profile-content">
+  <div class="profile-container">
+    <!-- Avatar Section -->
+    <div class="avatar-header-box">
+      <div class="avatar-ring">
+        <img [src]="user.avatarUrl" alt="Profile" />
+        <button type="button" class="avatar-edit-badge" (click)="editAvatar()">
+          <ion-icon name="camera"></ion-icon>
+        </button>
+      </div>
+      <h3>{{ user.firstName }} {{ user.lastName }}</h3>
+      <div class="role-pill">{{ user.role | uppercase }}</div>
+      <p class="campus-tag">Mindoro State University · Victoria Campus</p>
+    </div>
+
+    <!-- Personal Information Card -->
+    <div class="settings-card">
+      <h4>Institutional Information</h4>
+      
+      <div class="field-item">
+        <label>First Name</label>
+        <div class="minsu-input-group">
+          <div class="minsu-icon-container"><ion-icon name="person-outline"></ion-icon></div>
+          <input type="text" [(ngModel)]="user.firstName" />
+        </div>
+      </div>
+
+      <div class="field-item">
+        <label>Last Name</label>
+        <div class="minsu-input-group">
+          <div class="minsu-icon-container"><ion-icon name="person-outline"></ion-icon></div>
+          <input type="text" [(ngModel)]="user.lastName" />
+        </div>
+      </div>
+
+      <div class="field-item">
+        <label>MinSU Email (Restricted to @minsu.edu.ph)</label>
+        <div class="minsu-input-group">
+          <div class="minsu-icon-container"><ion-icon name="mail-outline"></ion-icon></div>
+          <input type="email" [(ngModel)]="user.email" (input)="validateEmail()" />
+        </div>
+        <span *ngIf="!isEmailValid" class="error-msg">Email must end with @minsu.edu.ph</span>
+      </div>
+
+      <div class="field-item">
+        <label>Contact Phone</label>
+        <div class="minsu-input-group">
+          <div class="minsu-icon-container"><ion-icon name="call-outline"></ion-icon></div>
+          <input type="tel" [(ngModel)]="user.phone" />
+        </div>
+      </div>
+
+      <div class="field-item">
+        <label>Campus Role</label>
+        <div class="minsu-input-group">
+          <div class="minsu-icon-container"><ion-icon name="shield-checkmark-outline"></ion-icon></div>
+          <select [(ngModel)]="user.role" [disabled]="user.isApproved || user.approvalStatus === 'approved'">
+            <option value="student">Student</option>
+            <option value="faculty">Faculty Member</option>
+            <option value="admin_staff">Admin Staff</option>
+            <option value="non_teaching">Non-Teaching Personnel</option>
+            <option *ngIf="user.role === 'admin'" value="admin">System Administrator</option>
+          </select>
+        </div>
+        <span *ngIf="user.isApproved || user.approvalStatus === 'approved'" class="text-hint">
+          Verified & locked. Contact System Admin to change role.
+        </span>
+      </div>
+
+      <button type="button" class="btn-save-profile" (click)="saveProfile()">
+        Save Profile Changes
+      </button>
+    </div>
+
+    <!-- Change Password Form -->
+    <div class="settings-card">
+      <h4>Change Password</h4>
+      
+      <div class="field-item">
+        <label>Current Password</label>
+        <div class="minsu-input-group">
+          <div class="minsu-icon-container"><ion-icon name="lock-closed-outline"></ion-icon></div>
+          <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="passwordForm.current" />
+          <button type="button" class="toggle-pass" (click)="showPassword = !showPassword">
+            <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="field-item">
+        <label>New Password</label>
+        <div class="minsu-input-group">
+          <div class="minsu-icon-container"><ion-icon name="key-outline"></ion-icon></div>
+          <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="passwordForm.new" />
+        </div>
+      </div>
+
+      <button type="button" class="btn-change-pass" (click)="changePassword()">
+        Update Password
+      </button>
+    </div>
+
+    <!-- Danger Zone: Account Deletion -->
+    <div class="danger-zone-card">
+      <h4>Danger Zone</h4>
+      <p>Permanently delete your MinSU FoundIt! account and unregister your posted items.</p>
+      <button type="button" class="btn-delete-account" (click)="confirmAccountDeletion()">
+        <ion-icon name="trash-outline"></ion-icon>
+        Delete Account
+      </button>
+    </div>
+  </div>
+</ion-content>
